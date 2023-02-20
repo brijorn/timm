@@ -1,4 +1,4 @@
-use std::{fmt::Display, collections::HashMap};
+use std::{collections::HashMap, fmt::Display};
 
 use reqwest::{Client, Error, Response};
 use serde::{Deserialize, Serialize};
@@ -63,7 +63,7 @@ pub struct AnkiConnectNoteFields {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub picture: Option<[String; 1]>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub audio: Option<[String; 1]>
+    pub audio: Option<[String; 1]>,
 }
 #[derive(Deserialize, Serialize, Debug)]
 #[serde(rename_all = "lowercase")]
@@ -116,10 +116,7 @@ impl AnkiConnect {
         };
 
         match res.json::<serde_json::Value>().await {
-            Ok(a) => {
-                println!("{:#?}", a);
-                Ok(())
-            },
+            Ok(_) => Ok(()),
             Err(e) => return Err(TimmError::ResponseError(e.to_string())),
         }
     }
@@ -153,6 +150,10 @@ impl AnkiConnect {
             Some(v) => Ok(v.to_owned()),
             None => Err(TimmError::ResponseError("No Value Found".to_string())),
         }
+    }
+
+    pub async fn gui_browse() {
+        todo!();
     }
 }
 
